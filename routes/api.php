@@ -18,4 +18,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('job-vacanct', JobVacancyController::class);
+Route::resource('job-vacancy', JobVacancyController::class);
