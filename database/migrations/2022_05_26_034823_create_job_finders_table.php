@@ -15,6 +15,10 @@ class CreateJobFindersTable extends Migration
     {
         Schema::create('job_finders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
+            $table->string('full_name');
+            $table->date('birth_date');
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
