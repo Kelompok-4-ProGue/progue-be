@@ -8,6 +8,7 @@ use Hash;
 use Validator;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\JobFinder;
 use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
@@ -44,9 +45,9 @@ class AuthController extends Controller
         
         $credentials['email'] = $input['email'];
         $credentials['password'] = Hash::make($input['password']);
+        $credentials['role'] = 'company';
         $user = User::create($credentials);
-
-        if ($company) {
+        if ($user) {
             // Create Company
             $input['user_id'] = $user->id;
             $company = Company::create($input);
@@ -69,7 +70,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'full_name' => 'required',
             'birth_date' => 'required|date',
-            'address' => 'required|string|max:250',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
         ]);
@@ -80,6 +80,8 @@ class AuthController extends Controller
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['password_confirmation'] = bcrypt($input['password_confirmation']);
+        $input['role'] = 'job_finder';
         $user = User::create($input);
 
         if ($user) {

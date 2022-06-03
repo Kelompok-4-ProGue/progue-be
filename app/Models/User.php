@@ -6,9 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-// use Laravel\Sanctum\HasApiTokens;
 use Laravel\Passport\HasApiTokens;
-
 use App\Traits\Uuids;
 
 class User extends Authenticatable
@@ -23,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -43,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    /**
+     * Get the Company associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function Company()
+    {
+        return $this->hasOne(Company::class);
+    }
 }
