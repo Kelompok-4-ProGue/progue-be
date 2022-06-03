@@ -14,7 +14,11 @@ class JobVacancyController extends Controller
      */
     public function index()
     {
-        return JobVacancy::all();
+        return response()->json([
+            'succes' => true,
+            'message' => 'Success getting all Job Vacancies',
+            'data' => JobVacancy::with('Company')->get(),   
+        ]);
     }
 
     /**
@@ -35,7 +39,22 @@ class JobVacancyController extends Controller
      */
     public function store(Request $request)
     {
-        return JobVacancy::create($request->all());
+        $input = $request->all();
+        $input['company_id'] = $request->user()->company->id;
+        $jobVacancy = JobVacancy::create($input);
+        if ($jobVacancy) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully adding Job Vacancy Data',
+                'data' => $jobVacancy
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed adding Job Vacancy Data',
+                'data' => []
+            ]);
+        }
     }
 
     /**
@@ -46,7 +65,11 @@ class JobVacancyController extends Controller
      */
     public function show(JobVacancy $jobVacancy)
     {
-        return $jobVacancy;
+        return response()->json([
+            'success' => true,
+            'message' => 'Success getting Job Vacancy Detail',
+            'data' => $jobVacancy
+        ]);
     }
 
     /**
@@ -69,8 +92,21 @@ class JobVacancyController extends Controller
      */
     public function update(Request $request, JobVacancy $jobVacancy)
     {
-        $jobVacancy->update($request->all());
-        return $jobVacancy;
+        $input = $request->all();
+        $jobVacancy->update($input);
+        if ($jobVacancy) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully updating Job Vacancy Data',
+                'data' => $jobVacancy
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed updating Job Vacancy Data',
+                'data' => []
+            ]);
+        }
     }
 
     /**
@@ -82,6 +118,10 @@ class JobVacancyController extends Controller
     public function destroy(JobVacancy $jobVacancy)
     {
         $jobVacancy->delete();
-        return $jobVacancy;
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleting Job Vacancy Data',
+            'data' => $jobVacancy
+        ]);;
     }
 }
