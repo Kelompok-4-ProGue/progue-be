@@ -14,7 +14,11 @@ class JobFinderController extends Controller
      */
     public function index()
     {
-         return JobFinder::all();
+        return response()->json([
+            'succes' => true,
+            'message' => 'Success getting all Job Finders',
+            'data' => JobFinder::all(),
+        ]);
     }
 
     /**
@@ -39,13 +43,13 @@ class JobFinderController extends Controller
         if ($company){
             return response()->json([
                 'succes' => true,
-                'message' => 'Success Account',
+                'message' => 'Successfully adding Job Finder',
                 'data' => JobFinder::create($request->all()),
             ]);
         }else{
             return response()->json([
                 'success' => false,
-                'message' => 'Failed adding account',
+                'message' => 'Failed adding Job Finder',
                 'data' => [],
             ]);
         }
