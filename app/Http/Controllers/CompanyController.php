@@ -146,4 +146,10 @@ class CompanyController extends Controller
             ]);
         }
     }
+
+    public function profile(Request $request)
+    {
+        $input = $request->all();
+        $company = Company::where('id', $input['id'])->first();
+    }
 }
