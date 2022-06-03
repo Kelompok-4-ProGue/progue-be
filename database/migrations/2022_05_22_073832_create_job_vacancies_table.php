@@ -14,13 +14,15 @@ class CreateJobVacanciesTable extends Migration
     public function up()
     {
         Schema::create('job_vacancies', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_skill_id');
-            $table->unsignedBigInteger('company_id');
+            $table->uuid('id')->primary();
+            $table->uuid('company_id');
             $table->string('position');
             $table->string('city');
             $table->string('salary');
             $table->timestamps();
+
+            // Add Foreign
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 

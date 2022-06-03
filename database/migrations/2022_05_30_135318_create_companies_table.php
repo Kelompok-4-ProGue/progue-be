@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJobFindersTable extends Migration
+class CreateCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateJobFindersTable extends Migration
      */
     public function up()
     {
-        Schema::create('job_finders', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->string('full_name');
-            $table->date('birth_date');
+            $table->string('company_name');
+            $table->string('company_address');
+            $table->string('company_letter');
             $table->timestamps();
 
             // Add Foreign
@@ -32,6 +33,6 @@ class CreateJobFindersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_finders');
+        Schema::dropIfExists('companies');
     }
 }
