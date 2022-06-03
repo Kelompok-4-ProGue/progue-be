@@ -14,7 +14,7 @@ class JobFinderController extends Controller
      */
     public function index()
     {
-        //
+         return JobFinder::all();
     }
 
     /**
@@ -35,7 +35,20 @@ class JobFinderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $jobFinder = JobFinder::create($request->all());
+        if ($company){
+            return response()->json([
+                'succes' => true,
+                'message' => 'Success Account',
+                'data' => JobFinder::create($request->all()),
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed adding account',
+                'data' => [],
+            ]);
+        }
     }
 
     /**

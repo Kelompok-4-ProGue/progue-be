@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Uuids;
+
 
 class JobFinder extends Model
 {
-    use HasFactory;
+    use HasFactory, Uuids;
+
     protected $table = 'job_finders';
-    protected $fillable = ['full_name', 'birth_date', 'address'];
+    protected $fillable = ['user_id', 'full_name', 'birth_date'];
 }
