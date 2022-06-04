@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /*
+    set the error log to Heroku error log
+    */
+    'log' => 'errorlog',
 
     /*
     |--------------------------------------------------------------------------
