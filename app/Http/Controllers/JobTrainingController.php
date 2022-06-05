@@ -14,7 +14,11 @@ class JobTrainingController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'succes' => true,
+            'message' => 'Success getting all Job Vacancies',
+            'data' => JobTraining::with('Company')->get(),   
+        ]);
     }
 
     /**
@@ -35,7 +39,22 @@ class JobTrainingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $input['company_id'] = $request->user()->company->id;
+        $jobTraining = JobTraining::create($input);
+        if ($jobTraining) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully adding Job Vacancy Data',
+                'data' => $jobTraining
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed adding Job Vacancy Data',
+                'data' => []
+            ]);
+        }
     }
 
     /**
@@ -46,7 +65,11 @@ class JobTrainingController extends Controller
      */
     public function show(JobTraining $jobTraining)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Success getting Job Vacancy Detail',
+            'data' => $jobTraining
+        ]);
     }
 
     /**
@@ -69,7 +92,21 @@ class JobTrainingController extends Controller
      */
     public function update(Request $request, JobTraining $jobTraining)
     {
-        //
+        $input = $request->all();
+        $jobTraining->update($input);
+        if ($jobTraining) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully updating Job Vacancy Data',
+                'data' => $jobTraining
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed updating Job Vacancy Data',
+                'data' => []
+            ]);
+        }
     }
 
     /**
@@ -80,6 +117,10 @@ class JobTrainingController extends Controller
      */
     public function destroy(JobTraining $jobTraining)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleting Job Vacancy Data',
+            'data' => $jobTraining->delete()
+        ]);;
     }
 }

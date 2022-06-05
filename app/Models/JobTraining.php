@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class JobTraining extends Model
 {
     use HasFactory;
+    protected $fillable = ['company_id', 'title', 'description', 'requirement', 'additional_requirement', 'city', 'price', 'is_online'];
+
+    public function Company()
+    {
+        return $this->belongsTo('App\Models\Company');
+    }
 }
