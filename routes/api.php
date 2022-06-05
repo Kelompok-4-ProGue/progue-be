@@ -29,9 +29,10 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::get('/user', function (Request $request) {
             return $request->user();
         }); // Check User
-
         Route::resource('job-vacancy', JobVacancyController::class); // Job Vacancy        
+
     });
+
 
     // Only Company can access
     Route::middleware(['auth:api', 'api.company'])->group(function () {
