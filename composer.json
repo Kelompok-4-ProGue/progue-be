@@ -46,6 +46,14 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "prepare": [
+            "@composer install",
+            "@cp .env.example .env",
+            "@php artisan key:generate",
+            "@php artisan migrate --ansi",
+            "@php artisan passport:install --ansi",
+            "@php artisan storage:link"
         ]
     },
     "extra": {
