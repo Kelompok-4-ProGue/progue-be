@@ -17,9 +17,9 @@ class CompanyFactory extends Factory
         $user = User::where('role', 'company')->first();
         return [
             "user_id" => $user->id,
-            "company_name" => $this->faker->company(),
-            "company_address" => $this->faker->address(),
-            "company_letter" => $this->faker->mimeType(),
+            "name" => $this->faker->company(),
+            "address" => $this->faker->address(),
+            "letter" => $this->faker->mimeType(),
         ];
     }
 }
