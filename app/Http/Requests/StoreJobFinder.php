@@ -24,7 +24,7 @@ class StoreJobFinder extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => 'required|string|max:50',
+            'name' => 'required|string|max:50',
             'birth_date' => 'required|date',
             'address' => 'required|string|max:250',
         ];
