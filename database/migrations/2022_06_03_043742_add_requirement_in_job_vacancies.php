@@ -17,7 +17,7 @@ class AddRequirementInJobVacancies extends Migration
             $table->string('description')->after('position');
             $table->string('requirement')->after('description');
             $table->string('additional_requirement')->nullable()->after('requirement');
-            $table->enum('category', ['wfh', 'wfo', 'hybrid'])->after('salary')->default('wfh');
+            $table->enum('category', ['WFH', 'WFO', 'Hybrid'])->after('salary')->default('WFH');
         });
     }
 

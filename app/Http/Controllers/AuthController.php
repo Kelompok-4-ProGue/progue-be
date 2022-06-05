@@ -134,20 +134,9 @@ class AuthController extends Controller
     public function updateProfile(Request $request)
     {
         $user = User::find(Auth::user()->id);
-        if ($user->role == 'job_finder') {
-            $validator = Validator::make($request->all(), [
-                'full_name' => 'required',
-                'birth_date' => 'required|date',
-                'email' => 'required|email|unique:users|max:250',
-                'password' => 'required|confirmed',
-            ]);
-    
-            if ($validator->fails()) {
-                return response()->json(['error'=>$validator->errors()], 401);
-            }
-    
-            $input = $request->all();
-            $user->update($request->all());
+        $input = $request->all();
+        $user->role == 'company' ? $user->Company->update($input) : $user->JobFinder->update($input);
+        if ($user) {
             return response()->json([
                 'success' => true,
                 'message' => 'Success updating user profile',
