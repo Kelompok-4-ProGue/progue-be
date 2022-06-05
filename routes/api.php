@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobVacancyController;
 use App\Http\Controllers\JobFinderController;
+use App\Http\Controllers\JobTrainingController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AuthController;
 
@@ -26,13 +27,9 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     
     // All with token can access
     Route::middleware('auth:api')->group(function() {
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        }); // Check User
-        Route::resource('job-vacancy', JobVacancyController::class); // Job Vacancy        
-
+        Route::get('user', [AuthController::class, 'getProfile']); // Get User Profile
+        Route::resource('job-vacancy', JobVacancyController::class); // Job Vacancy
     });
-
 
     // Only Company can access
     Route::middleware(['auth:api', 'api.company'])->group(function () {
@@ -43,6 +40,13 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware(['auth:api', 'api.job_finder'])->group(function () {
         Route::resource('job-finder', JobFinderController::class); // Job Finder
     });
+
+    // PUBLIC CAN ACCESS
+    Route::get('job-vacancy', [JobVacancyController::class, 'index']); // Get Job Vacancy
+    Route::get('job-vacancy/{id}', [JobVacancyController::class, 'show']); // Get Detail Job Vacancy
+
+    Route::get('/job-training', [JobTrainingController::class, 'index']); // Get All Job Training
+    Route::get('/job-training/{id}', [JobTrainingController::class, 'show']); // Get Detail Job Training
 });
 
 

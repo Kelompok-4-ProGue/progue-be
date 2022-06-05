@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Auth;
 use Hash;
 use Validator;
@@ -109,4 +110,21 @@ class AuthController extends Controller
         return response($response, 200);
     }
     
+
+    public function getProfile(Request $request)
+    {
+        $user = User::with(['JobFinder', 'Company'])->find(Auth::user()->id);
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Success getting user profile',
+                'data' => $user
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed getting user profile',
+            ]);
+        }
+    }
 }

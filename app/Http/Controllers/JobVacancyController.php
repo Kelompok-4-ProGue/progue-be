@@ -63,8 +63,9 @@ class JobVacancyController extends Controller
      * @param  \App\Models\JobVacancy  $jobVacancy
      * @return \Illuminate\Http\Response
      */
-    public function show(JobVacancy $jobVacancy)
+    public function show($id)
     {
+        $jobVacancy = JobVacancy::find($id);
         return response()->json([
             'success' => true,
             'message' => 'Success getting Job Vacancy Detail',
