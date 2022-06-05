@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Company;
 
 class JobVacancyFactory extends Factory
 {
@@ -14,7 +15,7 @@ class JobVacancyFactory extends Factory
     public function definition()
     {
         return [
-            "company_id" => "",
+            "company_id" => Company::first()->id,
             "position" => $this->faker->jobTitle(),
             "description" => $this->faker->catchPhrase(),
             "requirement" => $this->faker->word(1, 4),
