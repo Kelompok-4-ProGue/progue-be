@@ -135,6 +135,27 @@ class AuthController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $input = $request->all();
+        if ($user->role == 'company') {
+            // small logo
+            $small_logo = time().'.'.$request->company_logo_small->extension();
+            $request->photo->move(public_path('company/small_logo'), $small_logo);
+            $input['company_logo_small'] = $small_logo;
+
+            // big logo
+            $big_logo = time().'.'.$request->company_logo_big->extension();
+            $request->photo->move(public_path('company/big_logo'), $big_logo);
+            $input['company_logo_big'] = $big_logo;
+
+            $company = Company::find($user->Company->id);
+            $company->update($input);
+        } else if ($user->role == 'job_finder') {
+            $logo_name = time().'.'.$request->photo->extension();
+            $request->photo->move(public_path('job_finder/profile_image'), $logo_name);
+            $input['photo'] = $logo_name;
+
+            $job_finder = JobFinder::find($user->JobFinder->id);
+            $job_finder->update($input);
+        }
         $user->role == 'company' ? $user->Company->update($input) : $user->JobFinder->update($input);
         if ($user) {
             return response()->json([
