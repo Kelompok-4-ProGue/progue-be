@@ -66,7 +66,7 @@ class AuthController extends Controller
         }
     }
 
-    public function registerJobFinder(Request $reqsuest)
+    public function registerJobFinder(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
