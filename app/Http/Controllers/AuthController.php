@@ -33,9 +33,9 @@ class AuthController extends Controller
     public function registerCompany(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'company_name' => 'required|string|max:50',
-            'company_address' => 'required|string|max:250',
-            'company_letter' => 'required|mimes:pdf|max:2048',
+            'name' => 'required|string|max:50',
+            'address' => 'required|string|max:250',
+            'letter' => 'required|mimes:pdf|max:2048',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
         ]);
@@ -66,10 +66,10 @@ class AuthController extends Controller
         }
     }
 
-    public function registerJobFinder(Request $request)
+    public function registerJobFinder(Request $reqsuest)
     {
         $validator = Validator::make($request->all(), [
-            'full_name' => 'required',
+            'name' => 'required',
             'birth_date' => 'required|date',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
@@ -145,6 +145,7 @@ class AuthController extends Controller
             $big_logo = time().'.'.$request->company_logo_big->extension();
             $request->photo->move(public_path('company/big_logo'), $big_logo);
             $input['company_logo_big'] = $big_logo;
+            $input['photo'] = Storage::url($logo_name);
 
             $company = Company::find($user->Company->id);
             $company->update($input);
