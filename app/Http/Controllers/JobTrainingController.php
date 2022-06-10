@@ -63,8 +63,9 @@ class JobTrainingController extends Controller
      * @param  \App\Models\JobTraining  $jobTraining
      * @return \Illuminate\Http\Response
      */
-    public function show(JobTraining $jobTraining)
+    public function show($id)
     {
+        $jobTraining = JobTraining::find($id);
         return response()->json([
             'success' => true,
             'message' => 'Success getting Job Vacancy Detail',
