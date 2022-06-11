@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\JobFinder;
 use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\App;
 
 class AuthController extends Controller
 {
@@ -123,6 +122,7 @@ class AuthController extends Controller
     public function getProfile(Request $request)
     {
         $user = Auth::user();
+        return $user;
         $data = $user->role == 'company' ? $user->Company : $user->JobFinder;
         $data['email'] = $user->email;
         
