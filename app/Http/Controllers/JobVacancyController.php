@@ -17,7 +17,7 @@ class JobVacancyController extends Controller
         return response()->json([
             'succes' => true,
             'message' => 'Success getting all Job Vacancies',
-            'data' => JobVacancy::with('Company')->get(),   
+            'data' => JobVacancy::with('Company')->get(),
         ]);
     }
 
