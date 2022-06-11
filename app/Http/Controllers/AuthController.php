@@ -122,7 +122,6 @@ class AuthController extends Controller
     public function getProfile(Request $request)
     {
         $user = Auth::user();
-        return $user;
         $data = $user->role == 'company' ? $user->Company : $user->JobFinder;
         $data['email'] = $user->email;
         $data['role'] = $user->role;
