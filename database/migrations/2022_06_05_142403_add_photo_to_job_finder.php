@@ -19,7 +19,7 @@ class AddPhotoToJobFinder extends Migration
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->integer('postal_code')->nullable();
-            $table->integer('birth_place')->nullable();
+            $table->string('birth_place')->nullable();
             $table->string('linkedin')->nullable();
             $table->string('website')->nullable();
         });
