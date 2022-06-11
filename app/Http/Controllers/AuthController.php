@@ -116,6 +116,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $data = $user->role == 'company' ? $user->Company : $user->JobFinder;
         $data['email'] = $user->email;
+        $data['role'] = $user->role;
         
         if ($data) {
             return response()->json([
