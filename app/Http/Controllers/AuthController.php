@@ -36,18 +36,13 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'address' => 'required|string|max:250',
-            //'letter' => 'required|file|mimes:pdf|max:2048',
+            'letter' => 'required|file|mimes:pdf|max:2048',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
         ]
     );
 
         $input = $request->all();
-
-        $company_letter = time().'.'.$request->letter->extension();
-        $request->letter->move(public_path('storage/company/letter'), $company_letter);
-        $input['letter'] = $company_letter;
-
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);
         }
@@ -57,20 +52,33 @@ class AuthController extends Controller
         $credentials['role'] = 'company';
         $user = User::create($credentials);
         if ($user) {
-            // Create Company
+            // handle file upload
+            $company_letter = time().'.'.$request->letter->extension();
+            $company_letter_path = '/storage/company/letter/';
+            $request->letter->move(public_path($company_letter_path), $company_letter);
+            
+            $input['letter'] = url('/').$company_letter_path.$company_letter;
             $input['user_id'] = $user->id;
-            $company = Company::create($input);
-            //$company->letter = url($fileStoragePath);
 
-            return response()->json([
-                'success'=> true,
-                'message' => 'Successfully created user!',
-                'data' => $company
-            ], 200);
+            // Create Company
+            $company = Company::create($input);
+
+            if ($company) {
+                return response()->json([
+                    'success'=> true,
+                    'message' => 'Successfully created Company!',
+                    'data' => $company
+                ], 200);
+            } else {
+                return response()->json([
+                    'success'=> false,
+                    'message' => 'Failed to create Company!'
+                ], 500);
+            }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed registering Company',
+                'message' => 'Failed registering User!',
             ]);
         }
     }
@@ -143,7 +151,7 @@ class AuthController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
         $input = $request->all();
         if ($user->role == 'company') {
             // small logo
