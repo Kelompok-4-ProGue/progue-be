@@ -32,7 +32,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     // All with token can access
     Route::middleware('auth:api')->group(function() {
         Route::get('user', [AuthController::class, 'getProfile']); // Get User Profile
-        Route::put('user', [AuthController::class, 'updateProfile']); // Get User Profile
+        Route::post('user', [AuthController::class, 'updateProfile']); // Get User Profile
         Route::resource('job-vacancy', JobVacancyController::class); // Job Vacancy
     });
 

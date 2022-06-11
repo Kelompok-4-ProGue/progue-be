@@ -20,7 +20,7 @@ class CompanyFactory extends Factory
             "name" => $this->faker->company(),
             "address" => $this->faker->address(),
             "letter" => $this->faker->mimeType(),
-            "company_logo_small" => $this->faker->file('public/company_logo', 'storage/public', true)
+            "company_logo_big" => $this->faker->file('public/company_logo', 'storage/company/logo/big_logo', true)
         ];
     }
 }

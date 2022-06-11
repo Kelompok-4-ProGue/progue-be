@@ -154,7 +154,7 @@ class AuthController extends Controller
             $big_logo = time().'.'.$request->company_logo_big->extension();
             $request->photo->move(public_path('storage/company/logo/big_logo'), $big_logo);
             $input['company_logo_big'] = $big_logo;
-            $input['photo'] = Storage::url($logo_name);
+            $input['photo'] = Storage::url($big_logo);
 
             $company = Company::find($user->Company->id);
             $company->update($input);
