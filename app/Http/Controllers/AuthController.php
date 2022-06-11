@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\JobFinder;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\App;
 
 class AuthController extends Controller
 {
@@ -35,14 +36,21 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'address' => 'required|string|max:250',
-            'letter' => 'required|mimes:pdf|max:2048',
+            'letter' => 'required|file|mimes:pdf|max:2048',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
-        ]);
+        ]
+    );
+
+        $input = $request->all();
+
+        $company_letter = time().'.'.$request->letter->extension();
+        $request->letter->move(public_path('storage/company/letter'), $company_letter);
+        $input['letter'] = $company_letter;
+
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);
         }
-        $input = $request->all();
         
         $credentials['email'] = $input['email'];
         $credentials['password'] = Hash::make($input['password']);
@@ -52,6 +60,7 @@ class AuthController extends Controller
             // Create Company
             $input['user_id'] = $user->id;
             $company = Company::create($input);
+            //$company->letter = url($fileStoragePath);
 
             return response()->json([
                 'success'=> true,
@@ -139,12 +148,12 @@ class AuthController extends Controller
         if ($user->role == 'company') {
             // small logo
             $small_logo = time().'.'.$request->company_logo_small->extension();
-            $request->photo->move(public_path('company/small_logo'), $small_logo);
+            $request->photo->move(public_path('storage/company/logo/small_logo'), $small_logo);
             $input['company_logo_small'] = $small_logo;
 
             // big logo
             $big_logo = time().'.'.$request->company_logo_big->extension();
-            $request->photo->move(public_path('company/big_logo'), $big_logo);
+            $request->photo->move(public_path('storage/company/logo/big_logo'), $big_logo);
             $input['company_logo_big'] = $big_logo;
             $input['photo'] = Storage::url($logo_name);
 
