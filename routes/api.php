@@ -24,6 +24,13 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('/login', [AuthController::class, 'login']); // Login
     Route::post('/register/company', [AuthController::class, 'registerCompany']); // Register Company
     Route::post('/register/job_finder', [AuthController::class, 'registerJobFinder']); // Register Job Finder
+
+    // PUBLIC CAN ACCESS
+    Route::get('job-vacancy', [JobVacancyController::class, 'index']); // Get Job Vacancy
+    Route::get('job-vacancy/{id}', [JobVacancyController::class, 'show']); // Get Detail Job Vacancy
+
+    Route::get('/job-training', [JobTrainingController::class, 'index']); // Get All Job Training
+    Route::get('/job-training/{id}', [JobTrainingController::class, 'show']); // Get Detail Job Training
     
     // All with token can access
     Route::middleware('auth:api')->group(function() {
@@ -41,13 +48,6 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware(['auth:api', 'api.job_finder'])->group(function () {
         Route::resource('job-finder', JobFinderController::class); // Job Finder
     });
-
-    // PUBLIC CAN ACCESS
-    Route::get('job-vacancy', [JobVacancyController::class, 'index']); // Get Job Vacancy
-    Route::get('job-vacancy/{id}', [JobVacancyController::class, 'show']); // Get Detail Job Vacancy
-
-    Route::get('/job-training', [JobTrainingController::class, 'index']); // Get All Job Training
-    Route::get('/job-training/{id}', [JobTrainingController::class, 'show']); // Get Detail Job Training
 });
 
 

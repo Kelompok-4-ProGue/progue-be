@@ -66,11 +66,18 @@ class JobTrainingController extends Controller
     public function show($id)
     {
         $jobTraining = JobTraining::find($id);
-        return response()->json([
-            'success' => true,
-            'message' => 'Success getting Job Vacancy Detail',
-            'data' => $jobTraining
-        ]);
+        if ($jobTraining) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Success getting Job Vacancy Detail',
+                'data' => $jobTraining
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed getting Job Vacancy Detail'
+            ]);
+        }
     }
 
     /**

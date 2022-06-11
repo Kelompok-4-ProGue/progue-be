@@ -66,11 +66,18 @@ class JobVacancyController extends Controller
     public function show($id)
     {
         $jobVacancy = JobVacancy::find($id);
-        return response()->json([
-            'success' => true,
-            'message' => 'Success getting Job Vacancy Detail',
-            'data' => $jobVacancy
-        ]);
+        if ($jobVacancy) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Success getting Job Vacancy Detail',
+                'data' => $jobVacancy
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed getting Job Vacancy Detail'
+            ]);
+        }
     }
 
     /**
