@@ -33,7 +33,7 @@ class AddPhotoToJobFinder extends Migration
     public function down()
     {
         Schema::table('job_finders', function (Blueprint $table) {
-            //
+            $table->string('birth_place')->nullable();
         });
     }
 }
