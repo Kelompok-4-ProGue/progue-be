@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\JobFinder;
 use App\Http\Requests\LoginRequest;
+use Storage;
 
 class AuthController extends Controller
 {
@@ -35,7 +36,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'address' => 'required|string|max:250',
-            'letter' => 'required|file|mimes:pdf|max:2048',
+            //'letter' => 'required|file|mimes:pdf|max:2048',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
         ]
@@ -147,14 +148,14 @@ class AuthController extends Controller
         if ($user->role == 'company') {
             // small logo
             $small_logo = time().'.'.$request->company_logo_small->extension();
-            $request->photo->move(public_path('storage/company/logo/small_logo'), $small_logo);
+            $request->company_logo_small->move(public_path('storage/company/logo/small_logo'), $small_logo);
             $input['company_logo_small'] = $small_logo;
 
             // big logo
             $big_logo = time().'.'.$request->company_logo_big->extension();
-            $request->photo->move(public_path('storage/company/logo/big_logo'), $big_logo);
+            $request->company_logo_big->move(public_path('storage/company/logo/big_logo'), $big_logo);
             $input['company_logo_big'] = $big_logo;
-            $input['photo'] = Storage::url($big_logo);
+            $input['company_logo_big'] = Storage::url($big_logo);
 
             $company = Company::find($user->Company->id);
             $company->update($input);
