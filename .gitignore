@@ -3,7 +3,6 @@
 /public/storage
 /vendor
 /storage/*.key
-/storage/company/logo/big_logo
 .env
 .env.backup
 .phpunit.result.cache
