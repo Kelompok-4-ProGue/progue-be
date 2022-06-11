@@ -12,5 +12,5 @@ class JobFinder extends Model
     use HasFactory, Uuids;
 
     protected $table = 'job_finders';
-    protected $fillable = ['user_id', 'name', 'birth_date'];
+    protected $fillable = ['user_id', 'name', 'birth_date', 'photo', 'phone', 'address', 'city', 'postal_code', 'birth_place', 'linkedin', 'website'];
 }
