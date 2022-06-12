@@ -42,6 +42,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware(['auth:api', 'api.company'])->group(function () {
         Route::get('company/job_vacancy', [JobVacancyController::class, 'getCompanyJobVacancy']); // Get Conmpany Job Vacancy
         Route::resource('company', CompanyController::class); // Company
+        Route::resource('job-training', CompanyController::class); // Company
         Route::put('accept-job-vacancy-application', [JobVacancyApplicationController::class, 'accept']); // Accept Job Vacancy Application
         Route::put('reject-job-vacancy-application', [JobVacancyApplicationController::class, 'reject']); // Reject Job Vacancy Application
 
