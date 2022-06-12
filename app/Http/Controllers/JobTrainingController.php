@@ -143,19 +143,20 @@ class JobTrainingController extends Controller
             $motivation_letter = time().'.'.$request->motivation_letter->extension();
             $motivation_letter_path = Storage::url('job_training_application/motivation_letter/');
             $request->motivation_letter->move(public_path($motivation_letter_path), $motivation_letter);
-            $input['motivation_letter'] = url('/').$motivation_letter_path.$motivation_letter;
+            $input['motivation_letter'] = $motivation_letter;
             
             // handle cv upload
             $cv = time().'.'.$request->cv->extension();
             $cv_path = Storage::url('job_training_application/cv/');
             $request->cv->move(public_path($cv_path), $cv);
-            $input['cv'] = url('/').$cv_path.$cv;
+            $input['cv'] = $cv;
             
             // handle portfolio upload
             $portfolio = time().'.'.$request->portfolio->extension();
             $portfolio_path = Storage::url('job_training_application/portfolio/');
             $request->portfolio->move(public_path($portfolio_path), $portfolio);
-            $input['portfolio'] = url('/').$portfolio_path.$portfolio;
+            $input['portfolio'] = $portfolio;
+            
             $jobTraining = JobTraining::create($input);
 
             if ($jobTraining) {

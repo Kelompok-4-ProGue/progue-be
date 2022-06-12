@@ -13,4 +13,10 @@ class JobFinder extends Model
 
     protected $table = 'job_finders';
     protected $fillable = ['user_id', 'name', 'birth_date', 'photo', 'phone', 'address', 'city', 'postal_code', 'birth_place', 'linkedin', 'website'];
+
+    public function getPhotoAttribute($job_finder_photo)
+    {
+        $job_finder_photo_path = Storage::url('job_finder/profile_image/');
+        return url('/').$job_finder_photo_path.$job_finder_photo;
+    }
 }
