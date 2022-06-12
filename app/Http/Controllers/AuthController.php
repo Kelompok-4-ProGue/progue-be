@@ -161,7 +161,7 @@ class AuthController extends Controller
                 $company_letter = time().'.'.$request->letter->extension();
                 $company_letter_path = Storage::url('company/letter/');
                 $request->letter->move(public_path($company_letter_path), $company_letter);
-                $input['letter'] = url('/').$company_letter_path.$company_letter;
+                $input['letter'] = $company_letter;
             }
 
             // handle small logo upload
@@ -169,7 +169,7 @@ class AuthController extends Controller
                 $small_logo_path = Storage::url('company/logo/small_logo/');
                 $small_logo = time().'.'.$request->company_logo_small->extension();
                 $request->company_logo_small->move(public_path($small_logo_path), $small_logo);
-                $input['company_logo_small'] = url('/').$small_logo_path.$small_logo;
+                $input['company_logo_small'] = $small_logo;
             }
 
             // handle big logo upload
@@ -177,7 +177,7 @@ class AuthController extends Controller
                 $big_logo_path = Storage::url('company/logo/big_logo/');
                 $big_logo = time().'.'.$request->company_logo_big->extension();
                 $request->company_logo_big->move(public_path($big_logo_path), $big_logo);
-                $input['company_logo_big'] = url('/').$big_logo_path.$big_logo;
+                $input['company_logo_big'] = $big_logo;
             }
             $company->update($input);
             
