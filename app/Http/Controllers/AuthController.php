@@ -56,7 +56,7 @@ class AuthController extends Controller
             $company_letter_path = Storage::url('company/letter/');
             $request->letter->move(public_path($company_letter_path), $company_letter);
             
-            $input['letter'] = url('/').$company_letter_path.$company_letter;
+            $input['letter'] = $company_letter;
             $input['user_id'] = $user->id;
 
             // Create Company
