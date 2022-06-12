@@ -7,6 +7,7 @@ use App\Http\Controllers\JobFinderController;
 use App\Http\Controllers\JobTrainingController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JobVacancyApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,17 +34,22 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware('auth:api')->group(function() {
         Route::get('user', [AuthController::class, 'getProfile']); // Get User Profile
         Route::post('user', [AuthController::class, 'updateProfile']); // Get User Profile
+        Route::get('my-vacancy-applications', [JobVacancyApplicationController::class, 'index']); // Get User Profile
         Route::resource('job-vacancy', JobVacancyController::class); // Job Vacancy
     });
 
     // Only Company can access
     Route::middleware(['auth:api', 'api.company'])->group(function () {
+        Route::get('company/job_vacancy', [JobVacancyController::class, 'getCompanyJobVacancy']); // Get Conmpany Job Vacancy
         Route::resource('company', CompanyController::class); // Company
+        Route::put('accept-job-vacancy-application', [JobVacancyApplicationController::class, 'accept']); // Get User Profile
+        Route::put('reject-job-vacancy-application', [JobVacancyApplicationController::class, 'reject']); // Get User Profile
     });
 
     // Only Job Finder can access
     Route::middleware(['auth:api', 'api.job_finder'])->group(function () {
         Route::resource('job-finder', JobFinderController::class); // Job Finder
+        Route::post('apply-job-vacancy', [JobVacancyApplicationController::class, 'apply']); // Get User Profile
     });
 
     // PUBLIC CAN ACCESS
@@ -53,8 +59,6 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     // Route::get('sendbasicemail','MailController@basic_email');
     // Route::get('sendhtmlemail','MailController@html_email');
     // Route::get('sendattachmentemail','MailController@attachment_email');
-
-    
 });
 
 

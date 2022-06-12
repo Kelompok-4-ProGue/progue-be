@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JobVacancy;
 use Illuminate\Http\Request;
+use Auth;
 
 class JobVacancyController extends Controller
 {
@@ -130,6 +131,18 @@ class JobVacancyController extends Controller
             'success' => true,
             'message' => 'Successfully deleting Job Vacancy Data',
             'data' => $jobVacancy
-        ]);;
+        ]);
+    }
+
+    public function getCompanyJobVacancy(Request $request)
+    {
+        
+        $company = Auth::user()->Company;
+        $jobVacancies = JobVacancy::where('company_id', $company->id)->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Success getting Job Vacancy Data',
+            'data' => $jobVacancies
+        ]);
     }
 }
