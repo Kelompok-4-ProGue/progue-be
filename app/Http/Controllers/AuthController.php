@@ -39,8 +39,7 @@ class AuthController extends Controller
             'letter' => 'required|file|mimes:pdf|max:2048',
             'email' => 'required|email|unique:users|max:250',
             'password' => 'required|confirmed',
-        ]
-    );
+        ]);
 
         $input = $request->all();
         if ($validator->fails()) {
@@ -54,7 +53,7 @@ class AuthController extends Controller
         if ($user) {
             // handle file upload
             $company_letter = time().'.'.$request->letter->extension();
-            $company_letter_path = '/storage/company/letter/';
+            $company_letter_path = Storage::url('company/letter/');
             $request->letter->move(public_path($company_letter_path), $company_letter);
             
             $input['letter'] = url('/').$company_letter_path.$company_letter;
@@ -153,29 +152,51 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $input = $request->all();
+
         if ($user->role == 'company') {
-            // small logo
-            $small_logo = time().'.'.$request->company_logo_small->extension();
-            $request->company_logo_small->move(public_path('storage/company/logo/small_logo'), $small_logo);
-            $input['company_logo_small'] = $small_logo;
+            $company = $user->Company;
 
-            // big logo
-            $big_logo = time().'.'.$request->company_logo_big->extension();
-            $request->company_logo_big->move(public_path('storage/company/logo/big_logo'), $big_logo);
-            $input['company_logo_big'] = $big_logo;
-            $input['company_logo_big'] = Storage::url($big_logo);
+            if ($request->hasFile('letter')) {
+                // handle letter upload
+                $company_letter = time().'.'.$request->letter->extension();
+                $company_letter_path = Storage::url('company/letter/');
+                $request->letter->move(public_path($company_letter_path), $company_letter);
+                $input['letter'] = url('/').$company_letter_path.$company_letter;
+            }
 
-            $company = Company::find($user->Company->id);
+            // handle small logo upload
+            if ($request->company_logo_small) {
+                $small_logo_path = Storage::url('company/logo/small_logo/');
+                $small_logo = time().'.'.$request->company_logo_small->extension();
+                $request->company_logo_small->move(public_path($small_logo_path), $small_logo);
+                $input['company_logo_small'] = url('/').$small_logo_path.$small_logo;
+            }
+
+            // handle big logo upload
+            if ($request->company_logo_big) {
+                $big_logo_path = Storage::url('company/logo/big_logo/');
+                $big_logo = time().'.'.$request->company_logo_big->extension();
+                $request->company_logo_big->move(public_path($big_logo_path), $big_logo);
+                $input['company_logo_big'] = url('/').$big_logo_path.$big_logo;
+            }
             $company->update($input);
+            
         } else if ($user->role == 'job_finder') {
-            $logo_name = time().'.'.$request->photo->extension();
-            $request->photo->move(public_path('job_finder/profile_image'), $logo_name);
-            $input['photo'] = $logo_name;
+            $job_finder = $user->JobFinder;
 
-            $job_finder = JobFinder::find($user->JobFinder->id);
+            // handle profile image upload
+            $input['photo'] = $job_finder->photo;
+            if ($request->photo) {
+                $photo_path = Storage::url('job_finder/profile_image/');
+                $photo = time().'.'.$request->photo->extension();
+                $request->photo->move(public_path($photo_path), $photo);
+                $input['photo'] = $photo;
+            }
             $job_finder->update($input);
         }
-        $user->role == 'company' ? $user->Company->update($input) : $user->JobFinder->update($input);
+
+        $res = $user;
+
         if ($user) {
             return response()->json([
                 'success' => true,
