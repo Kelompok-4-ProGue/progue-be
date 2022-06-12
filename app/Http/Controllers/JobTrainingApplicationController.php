@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobVacancyApplication;
+use App\Models\JobTrainingApplication;
 use Illuminate\Http\Request;
+use Auth;
 
-class JobVacancyApplicationController extends Controller
+class JobTrainingApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +17,15 @@ class JobVacancyApplicationController extends Controller
     {
         $user = Auth::user();
         if ($user->role == 'company') {
-            $job_vacancy_applications = JobVacancyApplication::where('company_id', $user->id)->with('Company', 'JobFinder')->get();
+            $job_training_applications = JobTrainingApplication::where('company_id', $user->id)->with('Company', 'JobFinder')->get();
             
         } else if ($user->role == 'job_finder') {
-            $job_vacancy_applications = JobVacancyApplication::where('job_finder_id', $user->id)->with('Company', 'JobFinder')->get();
+            $job_training_applications = JobTrainingApplication::where('job_finder_id', $user->id)->with('Company', 'JobFinder')->get();
         }
         return response()->json([
             'succes' => true,
-            'message' => 'Success getting all Job Vacancy Applications',
-            'data' => $job_vacancy_applications
+            'message' => 'Success getting all Job Training Applications',
+            'data' => $job_training_applications
         ]);
     }
 
@@ -52,10 +53,10 @@ class JobVacancyApplicationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\JobVacancyApplication  $jobVacancyApplication
+     * @param  \App\Models\JobTrainingApplication  $jobTrainingApplication
      * @return \Illuminate\Http\Response
      */
-    public function show(JobVacancyApplication $jobVacancyApplication)
+    public function show(JobTrainingApplication $jobTrainingApplication)
     {
         //
     }
@@ -63,10 +64,10 @@ class JobVacancyApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\JobVacancyApplication  $jobVacancyApplication
+     * @param  \App\Models\JobTrainingApplication  $jobTrainingApplication
      * @return \Illuminate\Http\Response
      */
-    public function edit(JobVacancyApplication $jobVacancyApplication)
+    public function edit(JobTrainingApplication $jobTrainingApplication)
     {
         //
     }
@@ -75,10 +76,10 @@ class JobVacancyApplicationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\JobVacancyApplication  $jobVacancyApplication
+     * @param  \App\Models\JobTrainingApplication  $jobTrainingApplication
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JobVacancyApplication $jobVacancyApplication)
+    public function update(Request $request, JobTrainingApplication $jobTrainingApplication)
     {
         //
     }
@@ -86,10 +87,10 @@ class JobVacancyApplicationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\JobVacancyApplication  $jobVacancyApplication
+     * @param  \App\Models\JobTrainingApplication  $jobTrainingApplication
      * @return \Illuminate\Http\Response
      */
-    public function destroy(JobVacancyApplication $jobVacancyApplication)
+    public function destroy(JobTrainingApplication $jobTrainingApplication)
     {
         //
     }
@@ -98,26 +99,26 @@ class JobVacancyApplicationController extends Controller
     {
         $user = Auth::user();
         if ($user->role == 'company') {
-            $jobVacancyApplication = JobVacancyApplication::find($id);
-            if ($jobVacancyApplication) {
-                $jobVacancyApplication->status = 'accepted';
-                $jobVacancyApplication->save();
+            $jobTrainingApplication = JobTrainingApplication::find($id);
+            if ($jobTrainingApplication) {
+                $jobTrainingApplication->status = 'accepted';
+                $jobTrainingApplication->save();
                 return response()->json([
                     'success' => true,
-                    'message' => 'Successfully accepting Job Vacancy Application',
-                    'data' => $jobVacancyApplication
+                    'message' => 'Successfully accepting Job Training Application',
+                    'data' => $jobTrainingApplication
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Failed accepting Job Vacancy Application',
+                    'message' => 'Failed accepting Job Training Application',
                     'data' => []
                 ]);
             }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed accepting Job Vacancy Application',
+                'message' => 'Failed accepting Job Training Application',
                 'data' => []
             ]);
         }
@@ -127,26 +128,26 @@ class JobVacancyApplicationController extends Controller
     {
         $user = Auth::user(); //company
         if ($user->role == 'company') {
-            $jobVacancyApplication = JobVacancyApplication::find($id);
-            if ($jobVacancyApplication) {
-                $jobVacancyApplication->status = 'rejected';
-                $jobVacancyApplication->save();
+            $jobTrainingApplication = JobTrainingApplication::find($id);
+            if ($jobTrainingApplication) {
+                $jobTrainingApplication->status = 'rejected';
+                $jobTrainingApplication->save();
                 return response()->json([
                     'success' => true,
-                    'message' => 'Successfully rejecting Job Vacancy Application',
-                    'data' => $jobVacancyApplication
+                    'message' => 'Successfully rejecting Job Training Application',
+                    'data' => $jobTrainingApplication
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Failed accepting Job Vacancy Application',
+                    'message' => 'Failed accepting Job Training Application',
                     'data' => []
                 ]);
             }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed accepting Job Vacancy Application',
+                'message' => 'Failed accepting Job Training Application',
                 'data' => []
             ]);
         }

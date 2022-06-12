@@ -145,4 +145,52 @@ class JobVacancyController extends Controller
             'data' => $jobVacancies
         ]);
     }
+
+    public function apply(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role == 'job_finder') {
+            $input = $request->all();
+            $input['job_finder_id'] = $user->id;
+            
+            // handle motivation_letter upload
+            $motivation_letter = time().'.'.$request->motivation_letter->extension();
+            $motivation_letter_path = Storage::url('job_vacancy_application/motivation_letter/');
+            $request->motivation_letter->move(public_path($motivation_letter_path), $motivation_letter);
+            $input['motivation_letter'] = url('/').$motivation_letter_path.$motivation_letter;
+            
+            // handle cv upload
+            $cv = time().'.'.$request->cv->extension();
+            $cv_path = Storage::url('job_vacancy_application/cv/');
+            $request->cv->move(public_path($cv_path), $cv);
+            $input['cv'] = url('/').$cv_path.$cv;
+            
+            // handle portfolio upload
+            $portfolio = time().'.'.$request->portfolio->extension();
+            $portfolio_path = Storage::url('job_vacancy_application/portfolio/');
+            $request->portfolio->move(public_path($portfolio_path), $portfolio);
+            $input['portfolio'] = url('/').$portfolio_path.$portfolio;
+            $jobVacancy = JobVacancy::create($input);
+
+            if ($jobVacancy) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Successfully applying Job Vacancy',
+                    'data' => $jobVacancy
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed applying Job Vacancy',
+                    'data' => []
+                ]);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed applying Job Vacancy',
+                'data' => []
+            ]);
+        }
+    }
 }

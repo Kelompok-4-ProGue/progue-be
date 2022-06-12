@@ -42,14 +42,18 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware(['auth:api', 'api.company'])->group(function () {
         Route::get('company/job_vacancy', [JobVacancyController::class, 'getCompanyJobVacancy']); // Get Conmpany Job Vacancy
         Route::resource('company', CompanyController::class); // Company
-        Route::put('accept-job-vacancy-application', [JobVacancyApplicationController::class, 'accept']); // Get User Profile
-        Route::put('reject-job-vacancy-application', [JobVacancyApplicationController::class, 'reject']); // Get User Profile
+        Route::put('accept-job-vacancy-application', [JobVacancyApplicationController::class, 'accept']); // Accept Job Vacancy Application
+        Route::put('reject-job-vacancy-application', [JobVacancyApplicationController::class, 'reject']); // Reject Job Vacancy Application
+
+        Route::put('accept-job-training-application', [JobTrainingApplicationController::class, 'accept']); // Accept Job Training Application
+        Route::put('reject-job-training-application', [JobTrainingApplicationController::class, 'reject']); // Accept Job Training Application
     });
 
     // Only Job Finder can access
     Route::middleware(['auth:api', 'api.job_finder'])->group(function () {
         Route::resource('job-finder', JobFinderController::class); // Job Finder
-        Route::post('apply-job-vacancy', [JobVacancyApplicationController::class, 'apply']); // Get User Profile
+        Route::post('apply-job-vacancy', [JobVacancyController::class, 'apply']); // Get User Profile
+        Route::post('apply-job-training', [JobTrainingController::class, 'apply']); // Get User Profile
     });
 
     // PUBLIC CAN ACCESS
