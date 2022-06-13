@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobVacancyController;
 use App\Http\Controllers\JobFinderController;
 use App\Http\Controllers\JobTrainingController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobVacancyApplicationController;
@@ -60,6 +61,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     // PUBLIC CAN ACCESS
     Route::get('job-vacancy', [JobVacancyController::class, 'index']); // Get Job Vacancy
     Route::get('job-training', [JobTrainingController::class, 'index']); // Get All Job Training
+    Route::get('blog', [BlogController::class, 'index']); // Get All Job Training
 
     // Route::get('sendbasicemail','MailController@basic_email');
     // Route::get('sendhtmlemail','MailController@html_email');
